@@ -66,6 +66,7 @@ public class TestBinario {
                 + " \n \t \t 9 \t \t \t 15"
                 + " \n \t 7 \t \t 3 \t 12 \t \t 20"
                 + "\t \t --> \t \t" + a.toString());
+        System.out.println("Fronte " + a.frontera().toString());
         System.out.println("\n");
         System.out.println("Inserto hijo en pos llena. Tiene que dar " + sErr + " --> " + ((a.insertar(5, 10, 'I')) ? sOk : sErr));
         System.out.println("Inserto con padre inexistente. Tiene que dar " + sErr + " --> " + ((a.insertar(5, 50, 'I')) ? sOk : sErr));
@@ -136,6 +137,7 @@ public class TestBinario {
         System.out.println("\n");
         System.out.println("Recorrido en InOrden.\n Tiene que dar: [ 7 - 9 - 10 - 3 - 10 - 12 - 15 - 20 ]  " + a.listarInorden().toString());
 
+        
     }
 
 }

@@ -1,26 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ArbolBinario;
 
 import lista.Lista;
 
 /**
  *
- * @author Carla Nuñez
+ * @author Carla Nuñez FAI-1631 / Mauricio Sawicki FAI-2256
  */
 //atributos
 public class ArbolBin {
 
     private NodoArbol raiz;
 
-    //constructor
+    // Crea un árbol binario vacío
     public ArbolBin() {
         this.raiz = null;
     }
 
+    
+    // Dado un elemento elemNuevo y un elemento elemPadre, inserta elemNuevo como hijo izquierdo o
+    //derecho de la primer aparición de elemPadre, según lo indique el parámetro posicion. Para que la operación
+   //termine con éxito debe existir un nodo en el árbol con elemento = elemPadre y ese nodo debe tener libre
+   //su hijo posicion. Si puede realizar la inserción devuelve verdadero, en caso contrario devuelve falso.
     public boolean insertar(Object elemNuevo, Object elemPadre, char posicion) {
         boolean respuesta = true;
         if (this.raiz == null) {
@@ -46,6 +47,8 @@ public class ArbolBin {
         return respuesta;
     }
 
+    // Devuelve falso si hay al menos un elemento cargado en el árbol y verdadero en caso contrario.
+  
     public boolean esVacio() {
         boolean respuesta = false;
         if (raiz == null) {
@@ -54,7 +57,7 @@ public class ArbolBin {
         return respuesta;
     }
 
-    public void preOrdenAux(NodoArbol nodo, int pos, Lista lista) {
+    private void preOrdenAux(NodoArbol nodo, int pos, Lista lista) {
         if (nodo != null) {
             lista.insertar(nodo.getElemento(), pos);
             preOrdenAux(nodo.getIzquierdo(), pos + 1, lista);
@@ -63,11 +66,13 @@ public class ArbolBin {
         }
     }
 
+    // Devuelve una lista con los elementos del árbol binario en el recorrido en preorden
     public Lista listarPreorden() {
         Lista lista = new Lista();
         preOrdenAux(this.raiz, 1, lista);
         return lista;
     }
+    // Dado un elemento devuelve el valor almacenado en su nodo padre (busca la primera aparición de elemento).
 
     public Object padre(Object hijo) {
         Object esPadre;
@@ -112,12 +117,14 @@ public class ArbolBin {
         return retorno;
     }
 
+    // Devuelve una lista con los elementos del árbol binario en el recorrido en posorden
     public Lista listarPosorden() {
         Lista lista2 = new Lista();
         posOrdenAux(this.raiz, lista2);
         return lista2;
     }
 
+    // Devuelve una lista con los elementos del árbol binario en el recorrido en inorden
     public Lista listarInorden() {
         Lista lista3 = new Lista();
         inOrdenAux(this.raiz, lista3);
@@ -125,7 +132,7 @@ public class ArbolBin {
 
     }
 
-    public void inOrdenAux(NodoArbol nodo, Lista lista3) {
+    private void inOrdenAux(NodoArbol nodo, Lista lista3) {
         if (nodo != null) {
             inOrdenAux(nodo.getIzquierdo(), lista3);
             lista3.insertar(nodo.getElemento(), lista3.longitud() + 1);
@@ -133,7 +140,7 @@ public class ArbolBin {
         }
     }
 
-    public void posOrdenAux(NodoArbol nodo, Lista lista2) {
+    private void posOrdenAux(NodoArbol nodo, Lista lista2) {
         if (nodo != null) {
             posOrdenAux(nodo.getIzquierdo(), lista2);
             posOrdenAux(nodo.getDerecho(), lista2);
@@ -163,9 +170,12 @@ public class ArbolBin {
         return resultado;
     }
 
+    // Quita todos los elementos de la estructura. El manejo de memoria es similar al explicado anteriormente
+   //para estructuras lineales dinámicas.
     public void vaciar() {
         this.raiz = null;
     }
+    
 
     private int alturaAux(NodoArbol n) {
         int cont = -1;
@@ -178,35 +188,47 @@ public class ArbolBin {
         return cont;
     }
 
+    // Devuelve la altura del árbol, es decir la longitud del camino más largo desde la raíz hasta una hoja
+//(Nota: un árbol vacío tiene altura -1 y una hoja tiene altura 0).
     public int altura() {
         int alt;
         alt = alturaAux(this.raiz);
         return alt;
     }
 
-    private int nivelAux(NodoArbol nodo, int elemento) {
-        int nivel;
-        if (nodo == null) {
-            nivel = Integer.MIN_VALUE;
-        } else if (nodo.getElemento().equals(elemento)) {
-            nivel = 0;
-        } else {
-            nivel = nivelAux(nodo.getIzquierdo(), elemento);
-            if (nivel == Integer.MIN_VALUE) {
-                nivel = nivelAux(nodo.getDerecho(), elemento);
+    private int nivelAux(NodoArbol nodoActual, Object elem, int profundidadActual) {
+        int res = -1;
+
+        if (nodoActual != null) {
+            //visito nodoActual
+            //si el elemActual es igual al elem ingresado por parametro devuelvo el nivel
+            if (nodoActual.getElemento().equals(elem)) {
+                res = profundidadActual;
+            } else {
+                res = nivelAux(nodoActual.getIzquierdo(), elem, profundidadActual + 1);
+                if (res == -1) //corta si lo encontro por izquierda        
+                {
+                    res = nivelAux(nodoActual.getDerecho(), elem, profundidadActual + 1);
+                }
+
             }
+        }
+        return res;
+    }
+    
+    // Devuelve el nivel de un elemento en el árbol. Si el elemento no existe en el árbol devuelve -1.
 
+     public int nivel(Object elem) {
+        int level = -1;
+        if (!this.esVacio()) {
+            level = nivelAux(this.raiz, elem, 0);
         }
-        if (nivel != Integer.MIN_VALUE) {
-            nivel++;
-        }
-        return nivel;
+        return level;
     }
 
-    public int nivel(int elemento) {
-        return nivelAux(this.raiz, elemento) - 1;
-    }
 
+    // Genera y devuelve una cadena de caracteres que indica cuál es la raíz del árbol y quienes son los hijos
+    //de cada nodo.
     @Override
     public String toString() {
         String cad;
@@ -245,29 +267,7 @@ public class ArbolBin {
         return cadena;
     }
 
-//    public boolean verificarPatron(Lista listaPatron) {
-//        boolean res;
-//        res = verificarRecursivo(this.raiz, listaPatron, 1);
-//        return res;
-//
-//    }
-//
-//    private boolean verificarRecursivo(NodoArbolInt raiz, Lista listaPatron, int posicion) {
-//        boolean aux = false;
-//       
-//        System.out.println(posicion + " " + listaPatron.longitud());
-//        if (posicion > listaPatron.longitud()) {            
-//            aux = true;
-//        } else if ((raiz != null) && (raiz.getElemento())) == (listaPatron.recuperar(posicion)) {
-//            
-//            aux = verificarRecursivo(raiz.getIzquierdo(), listaPatron, posicion + 1);
-//            if (!aux) {                
-//            
-//                aux = verificarRecursivo(raiz.getDerecho(), listaPatron, posicion + 1);
-//            }
-//        }
-//        return aux;
-//    }
+   // Devuelve una lista con todos los nodos hojas del arbol.
     public Lista frontera() {
         Lista lista = new Lista();
 
@@ -291,26 +291,7 @@ public class ArbolBin {
         }
     }
 
-    public ArbolBin clon() {
-        ArbolBin arbolRec = new ArbolBin();
-        if (this.esVacio() != true) {
-            arbolRec.raiz = clonRecursivo(this.raiz);
-        }
-
-        return arbolRec;
-    }
-
-    private NodoArbol clonRecursivo(NodoArbol nodo) {
-        NodoArbol aux = new NodoArbol();
-        aux.setElemento(nodo.getElemento());
-        if (nodo.getIzquierdo() != null) {
-            aux.setDerecho(clonRecursivo(nodo.getIzquierdo()));
-        }
-        if (nodo.getDerecho() != null) {
-            aux.setIzquierdo(clonRecursivo(nodo.getDerecho()));
-        }
-        return aux;
-    }
+    // Genera y devuelve un árbol binario que es equivalente (igual estructura y contenido de los nodos) que el árbol original.
 
     @Override
     public ArbolBin clone() {
@@ -332,6 +313,82 @@ public class ArbolBin {
             aux.setDerecho(clonAux(nodo.getDerecho()));
         }
         return aux;
+    }
+        public boolean verificarPatron(Lista listaPatron) {
+       boolean res;
+       res = verificarRecursivo(this.raiz, listaPatron, 1);
+       return res;
+
+   }
+
+  private boolean verificarRecursivo(NodoArbol raiz, Lista listaPatron, int posicion) {
+       boolean aux = false;       
+        
+        if (posicion > listaPatron.longitud()) {            
+           aux = true;
+       } 
+        else if ((raiz != null) && (raiz.getElemento()) == listaPatron.recuperar(posicion)) {
+          
+            aux = verificarRecursivo(raiz.getIzquierdo(), listaPatron, posicion + 1);
+           if (!aux) {                
+            
+                aux = verificarRecursivo(raiz.getDerecho(), listaPatron, posicion + 1);
+           }
+        }
+       return aux;
+    }
+  /*
+    clonarInvertido() que devuelve un nuevo árbol, que es una copia del árbol original(this) pero donde los hijos
+    están cambiados de lugar. Atención: el método devuelve un nuevo árbol, sin modificar el árbol original.
+     */
+    public ArbolBin clonarInvertido() {
+        ArbolBin arbolClon = new ArbolBin();
+        if (this.raiz != null) {
+            arbolClon.raiz = new NodoArbol(this.raiz.getElemento(), null, null);
+            clonarInvertidoAux(this.raiz, arbolClon.raiz);
+        }
+        return arbolClon;
+    }
+
+    private void clonarInvertidoAux(NodoArbol nOrig, NodoArbol nClon) {
+        if (nOrig.getDerecho() != null) {
+            //Si el HD del arbol original tiene elemento
+            //Creo un nuevo nodo y a ese nodo le seteo el elemento HD del arbol original
+            //Ese nuevo nodo creado se lo pongo como HI al arbolClon
+            nClon.setIzquierdo(new NodoArbol(nOrig.getDerecho().getElemento(), null, null));
+            //Llamo recursivamente para hacer lo mismo con toda la rama izquierda del arbol original
+            clonarInvertidoAux(nOrig.getDerecho(), nClon.getIzquierdo());
+        }
+        if (nOrig.getIzquierdo() != null) {
+            //Si el HI del arbol original tiene elemento
+            //Creo un nuevo nodo y a ese nodo le seteo el elemento HI del arbol original
+            //Ese nuevo nodo creado se lo pongo como HD al arbolClon
+            nClon.setDerecho(new NodoArbol(nOrig.getIzquierdo().getElemento(), null, null));
+            //Llamo recursivamente para hacer lo mismo con toda la rama derecha del arbol original
+            clonarInvertidoAux(nOrig.getIzquierdo(), nClon.getDerecho());
+        }
+    }
+    public boolean equals(ArbolBin otro) {
+        return equalsAux(this.raiz, otro.raiz);
+    }
+
+    private boolean equalsAux(NodoArbol nodoA1, NodoArbol nodoA2) {
+        boolean res = false;
+
+        if (nodoA1.getDerecho() == null && nodoA1.getIzquierdo() == null) {
+            res = true;
+        }
+
+            if (nodoA1 != null && nodoA2 != null) {
+                if (nodoA1.getElemento().equals(nodoA2.getElemento())) {
+                    res = equalsAux(nodoA1.getIzquierdo(), nodoA2.getIzquierdo());
+
+                } else if (!res) {
+                    res = equalsAux(nodoA1.getDerecho(), nodoA2.getDerecho());
+                }
+            }
+
+        return res;
     }
 
 }

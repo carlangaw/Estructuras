@@ -28,6 +28,11 @@ public class NodoArbol {
         this.derecho = null;
 
     }
+     public NodoArbol(Object elem, NodoArbol izq, NodoArbol der){
+        this.elemento = elem;
+        this.izquierdo = izq;
+        this.derecho = der;
+    }
 
     public Object getElemento() {
         return elemento;
