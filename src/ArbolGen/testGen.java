@@ -16,17 +16,28 @@ public class testGen {
     }
 
     public static void testGen() {
+        Lista listado = new Lista();
         ArbolGen arbolito = new ArbolGen();
-        arbolito.insertar(10, 0);
-        arbolito.insertar(25, 10);
-        arbolito.insertar(33, 10);
-        arbolito.insertar(54, 10);
-        arbolito.insertar(15, 25);
-        arbolito.insertar(47, 33);
-        arbolito.insertar(18, 33);
-        arbolito.insertar(63, 33);
-        arbolito.insertar(9, 18);
-        System.out.println(arbolito.misterioso(9).toString());
+        arbolito.insertar('Ñ', 0);
+        arbolito.insertar('M', 'Ñ');
+        arbolito.insertar('H', 'M');
+        arbolito.insertar('K', 'M');
+        arbolito.insertar('A', 'K');
+        arbolito.insertar('G', 'Ñ');
+        arbolito.insertar('F', 'G');
+        arbolito.insertar('W', 'G');
+        arbolito.insertar('J', 'W');
+
+//        arbolito.insertar(3, 9);
+//        arbolito.insertar(12, 15);
+//        arbolito.insertar(20, 15);
+//        arbolito.insertar(22, 15);
+//        arbolito.insertar(23, 15);
+//        arbolito.insertar(27, 15);
+        System.out.println("ARBOL " + arbolito.toString());
+        char a = 'J';
+        char b = 'W';
+        System.out.println(a + " Es hijo de " + b + " :" + arbolito.esHijoDe(a, b));
 
     }
 

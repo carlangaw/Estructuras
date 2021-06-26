@@ -37,6 +37,16 @@ public class TestBinario {
 
         ArbolBin a = new ArbolBin();
         ArbolBin b = new ArbolBin();
+        ArbolBin arbolito = new ArbolBin();
+        arbolito.insertar(10, null, 'I');
+        arbolito.insertar(5, 10, 'I');
+        arbolito.insertar(2, 5, 'I');
+        arbolito.insertar(23, 10, 'D');
+        arbolito.insertar(15, 23, 'I');
+        arbolito.insertar(24, 15, 'D');
+        System.out.println("ARBOLITO" + arbolito.toString());
+        arbolito.modificarSubarboles(2, 7, 78);
+        System.out.println("MODIFICADO" + arbolito);
 
         System.out.println(ANSI_YELLOW_BACKGROUND + "--------------------------------------------------------------------------------------------------------"
                 + "------------------------------------------------------------------------------------------" + RESET);
@@ -137,7 +147,6 @@ public class TestBinario {
         System.out.println("\n");
         System.out.println("Recorrido en InOrden.\n Tiene que dar: [ 7 - 9 - 10 - 3 - 10 - 12 - 15 - 20 ]  " + a.listarInorden().toString());
 
-        
     }
 
 }

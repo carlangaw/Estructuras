@@ -128,13 +128,13 @@ public class Test {
                 case 12:
                     System.out.println("Ingrese un elemento del cual desea eliminar la repeticion");
                     elemento=TecladoIn.readLineInt();
-                    listaEnteros.eliminarRepetido(elemento);
+//                    listaEnteros.eliminarRepetido(elemento);
                     System.out.println(listaEnteros.toString());
                     break;
                 case 13:
                     System.out.println("Ingrese una cantidad a calcular");
                     elemento=TecladoIn.readLineInt();
-                    listaEnteros.calcularPromedio(elemento);
+//                    listaEnteros.calcularPromedio(elemento);
                     break;
                 default:
                     System.err.println("ERROR: numero mal ingresado. Saliendo del programa");

@@ -1,4 +1,3 @@
-
 package ArbolBinario;
 
 import lista.Lista;
@@ -17,11 +16,10 @@ public class ArbolBin {
         this.raiz = null;
     }
 
-    
     // Dado un elemento elemNuevo y un elemento elemPadre, inserta elemNuevo como hijo izquierdo o
     //derecho de la primer aparición de elemPadre, según lo indique el parámetro posicion. Para que la operación
-   //termine con éxito debe existir un nodo en el árbol con elemento = elemPadre y ese nodo debe tener libre
-   //su hijo posicion. Si puede realizar la inserción devuelve verdadero, en caso contrario devuelve falso.
+    //termine con éxito debe existir un nodo en el árbol con elemento = elemPadre y ese nodo debe tener libre
+    //su hijo posicion. Si puede realizar la inserción devuelve verdadero, en caso contrario devuelve falso.
     public boolean insertar(Object elemNuevo, Object elemPadre, char posicion) {
         boolean respuesta = true;
         if (this.raiz == null) {
@@ -48,7 +46,6 @@ public class ArbolBin {
     }
 
     // Devuelve falso si hay al menos un elemento cargado en el árbol y verdadero en caso contrario.
-  
     public boolean esVacio() {
         boolean respuesta = false;
         if (raiz == null) {
@@ -100,20 +97,20 @@ public class ArbolBin {
                     }
 
                 }
-            
-            if (n.getIzquierdo() != null) {
-                if (n.getIzquierdo().getElemento().equals(elem)) {
-                    retorno = n;
+
+                if (n.getIzquierdo() != null) {
+                    if (n.getIzquierdo().getElemento().equals(elem)) {
+                        retorno = n;
+                    }
+
                 }
 
+                if (retorno == null) {
+                    retorno = padreRecursivo(elem, n.getIzquierdo());
+                }
             }
+        }
 
-            if (retorno == null) {
-                retorno = padreRecursivo(elem, n.getIzquierdo());
-            }
-        }
-        }
-        
         return retorno;
     }
 
@@ -171,11 +168,10 @@ public class ArbolBin {
     }
 
     // Quita todos los elementos de la estructura. El manejo de memoria es similar al explicado anteriormente
-   //para estructuras lineales dinámicas.
+    //para estructuras lineales dinámicas.
     public void vaciar() {
         this.raiz = null;
     }
-    
 
     private int alturaAux(NodoArbol n) {
         int cont = -1;
@@ -215,17 +211,15 @@ public class ArbolBin {
         }
         return res;
     }
-    
-    // Devuelve el nivel de un elemento en el árbol. Si el elemento no existe en el árbol devuelve -1.
 
-     public int nivel(Object elem) {
+    // Devuelve el nivel de un elemento en el árbol. Si el elemento no existe en el árbol devuelve -1.
+    public int nivel(Object elem) {
         int level = -1;
         if (!this.esVacio()) {
             level = nivelAux(this.raiz, elem, 0);
         }
         return level;
     }
-
 
     // Genera y devuelve una cadena de caracteres que indica cuál es la raíz del árbol y quienes son los hijos
     //de cada nodo.
@@ -267,7 +261,7 @@ public class ArbolBin {
         return cadena;
     }
 
-   // Devuelve una lista con todos los nodos hojas del arbol.
+    // Devuelve una lista con todos los nodos hojas del arbol.
     public Lista frontera() {
         Lista lista = new Lista();
 
@@ -292,7 +286,6 @@ public class ArbolBin {
     }
 
     // Genera y devuelve un árbol binario que es equivalente (igual estructura y contenido de los nodos) que el árbol original.
-
     @Override
     public ArbolBin clone() {
         ArbolBin arbolRec = new ArbolBin();
@@ -314,30 +307,31 @@ public class ArbolBin {
         }
         return aux;
     }
-        public boolean verificarPatron(Lista listaPatron) {
-       boolean res;
-       res = verificarRecursivo(this.raiz, listaPatron, 1);
-       return res;
 
-   }
+    public boolean verificarPatron(Lista listaPatron) {
+        boolean res;
+        res = verificarRecursivo(this.raiz, listaPatron, 1);
+        return res;
 
-  private boolean verificarRecursivo(NodoArbol raiz, Lista listaPatron, int posicion) {
-       boolean aux = false;       
-        
-        if (posicion > listaPatron.longitud()) {            
-           aux = true;
-       } 
-        else if ((raiz != null) && (raiz.getElemento()) == listaPatron.recuperar(posicion)) {
-          
-            aux = verificarRecursivo(raiz.getIzquierdo(), listaPatron, posicion + 1);
-           if (!aux) {                
-            
-                aux = verificarRecursivo(raiz.getDerecho(), listaPatron, posicion + 1);
-           }
-        }
-       return aux;
     }
-  /*
+
+    private boolean verificarRecursivo(NodoArbol raiz, Lista listaPatron, int posicion) {
+        boolean aux = false;
+
+        if (posicion > listaPatron.longitud()) {
+            aux = true;
+        } else if ((raiz != null) && (raiz.getElemento()) == listaPatron.recuperar(posicion)) {
+
+            aux = verificarRecursivo(raiz.getIzquierdo(), listaPatron, posicion + 1);
+            if (!aux) {
+
+                aux = verificarRecursivo(raiz.getDerecho(), listaPatron, posicion + 1);
+            }
+        }
+        return aux;
+    }
+
+    /*
     clonarInvertido() que devuelve un nuevo árbol, que es una copia del árbol original(this) pero donde los hijos
     están cambiados de lugar. Atención: el método devuelve un nuevo árbol, sin modificar el árbol original.
      */
@@ -368,27 +362,58 @@ public class ArbolBin {
             clonarInvertidoAux(nOrig.getIzquierdo(), nClon.getDerecho());
         }
     }
+
+    /*
+    Verifica que el árbol otro sea igual al arbol this. 
+    No puede usar los métodos básicos del TDA (insertar, existe, etc) 
+    y debe de recorrer lo mínimo ambos árboles.
+     */
     public boolean equals(ArbolBin otro) {
         return equalsAux(this.raiz, otro.raiz);
     }
 
     private boolean equalsAux(NodoArbol nodoA1, NodoArbol nodoA2) {
-        boolean res = false;
+        boolean res = true;
+        if (nodoA1 != null && nodoA2 != null) {
+            if (!nodoA1.getElemento().equals(nodoA2.getElemento())) {
+                res = false;
+            } else {
+                res = equalsAux(nodoA1.getIzquierdo(), nodoA2.getIzquierdo());
 
-        if (nodoA1.getDerecho() == null && nodoA1.getIzquierdo() == null) {
-            res = true;
-        }
-
-            if (nodoA1 != null && nodoA2 != null) {
-                if (nodoA1.getElemento().equals(nodoA2.getElemento())) {
-                    res = equalsAux(nodoA1.getIzquierdo(), nodoA2.getIzquierdo());
-
-                } else if (!res) {
+                if (res) {
                     res = equalsAux(nodoA1.getDerecho(), nodoA2.getDerecho());
                 }
             }
+        }
 
         return res;
     }
 
+    public void modificarSubarboles(Object d1, Object d2, Object d3) {
+        if (this.raiz != null) {
+            NodoArbol nodoNuevo = obtenerNodo(this.raiz, d1);
+            if (nodoNuevo != null) {
+                modificarAux(nodoNuevo, d2, d3);
+            }
+        }
+
+    }
+
+    private void modificarAux(NodoArbol nodoNuevo, Object d2, Object d3) {
+
+        if (nodoNuevo.getIzquierdo() == null && nodoNuevo.getDerecho() == null) {
+            nodoNuevo.setIzquierdo(new NodoArbol(d2));
+            nodoNuevo.setDerecho(new NodoArbol(d3));
+        }
+
+        if (nodoNuevo.getIzquierdo() != null && nodoNuevo.getDerecho() == null) {
+            nodoNuevo.getIzquierdo().setElemento(d2);
+            nodoNuevo.setDerecho(new NodoArbol(d3));
+
+        } else {
+            nodoNuevo.setIzquierdo(new NodoArbol(d2));
+            nodoNuevo.getDerecho().setElemento(d3);
+        }
+
+    }
 }
